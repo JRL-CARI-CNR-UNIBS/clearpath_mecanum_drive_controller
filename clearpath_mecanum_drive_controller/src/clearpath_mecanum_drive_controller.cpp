@@ -108,6 +108,9 @@ controller_interface::CallbackReturn MecanumDriveController::on_configure(
     return CallbackReturn::FAILURE;
   }
 
+  // Initialize odometry
+  odometry_.init(get_node()->get_clock()->now(), {params_.kinematics.base_frame_offset.x, params_.kinematics.base_frame_offset.y, params_.kinematics.base_frame_offset.theta});
+
   // Set wheel params for the odometry computation
   odometry_.setWheelsParams(
     params_.kinematics.sum_of_robot_center_projection_on_X_Y_axis,
@@ -530,10 +533,10 @@ controller_interface::return_type MecanumDriveController::update_and_write_comma
     controller_state_publisher_->msg_.back_left_wheel_velocity = state_interfaces_[1].get_value();
     controller_state_publisher_->msg_.back_right_wheel_velocity = state_interfaces_[2].get_value();
     controller_state_publisher_->msg_.front_right_wheel_velocity = state_interfaces_[3].get_value();
-    // controller_state_publisher_->msg_.front_left_wheel_velocity = command_interfaces_[0].get_value();
-    // controller_state_publisher_->msg_.back_left_wheel_velocity = command_interfaces_[1].get_value();
-    // controller_state_publisher_->msg_.back_right_wheel_velocity = command_interfaces_[2].get_value();
-    // controller_state_publisher_->msg_.front_right_wheel_velocity = command_interfaces_[3].get_value();
+  //  controller_state_publisher_->msg_.front_left_wheel_velocity = command_interfaces_[0].get_value();
+  //  controller_state_publisher_->msg_.back_left_wheel_velocity = command_interfaces_[1].get_value();
+  //  controller_state_publisher_->msg_.back_right_wheel_velocity = command_interfaces_[2].get_value();
+  //  controller_state_publisher_->msg_.front_right_wheel_velocity = command_interfaces_[3].get_value();
     controller_state_publisher_->msg_.reference_velocity.linear.x = reference_interfaces_[0];
     controller_state_publisher_->msg_.reference_velocity.linear.y = reference_interfaces_[1];
     controller_state_publisher_->msg_.reference_velocity.angular.z = reference_interfaces_[2];
